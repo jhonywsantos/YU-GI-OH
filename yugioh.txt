@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retro Yu-Gi-Oh! Duelo</title>
+    <title>Retro Yu-Gi-Oh! Duel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -15,8 +15,6 @@
             color: #fff;
             overflow: hidden;
             image-rendering: pixelated;
-            height: 100vh;
-            margin: 0;
         }
         
         .retro-border {
@@ -31,58 +29,62 @@
             text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
         }
         
-        /* Estilos adicionados para as imagens */
-        #startScreen {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                        url('src/assets/images/YUGIOH1.png') no-repeat center center;
-            background-size: cover;
+        .card {
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
         }
-
-        .bottom-left-image {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            width: 250px; /* Aumentado para 250px */
-            height: auto;
-            z-index: 10;
+        
+        .card:hover {
+            transform: translateY(-10px) scale(1.05);
         }
-
-        .content-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
+        
+        .card-played {
+            animation: playCard 0.5s forwards;
         }
-
-        .title {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
+        
+        .card-bot-played {
+            animation: botPlayCard 0.5s forwards;
         }
-
-        .subtitle {
-            font-size: 1.8rem;
-            margin-bottom: 3rem;
+        
+        .damage-effect {
+            animation: shake 0.5s;
         }
-
+        
+        .win-effect {
+            animation: celebrate 1s infinite;
+        }
+        
+        @keyframes playCard {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-100px) translateX(50px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+        
+        @keyframes botPlayCard {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-100px) translateX(-50px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+        
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+        
+        @keyframes celebrate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
         .start-button {
             position: relative;
             overflow: hidden;
-            font-size: 1.5rem;
-            padding: 15px 30px;
-            margin-bottom: 3rem;
         }
-
+        
         .start-button::after {
             content: '';
             position: absolute;
@@ -99,62 +101,46 @@
             transform: rotate(30deg);
             animation: shine 3s infinite;
         }
-
+        
         @keyframes shine {
             0% { left: -50%; }
             100% { left: 150%; }
         }
-
-        .copyright {
-            font-size: 0.7rem;
-            margin-top: 2rem;
+        
+        .type-icon {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
         }
-
-        .signature {
-            font-size: 0.7rem;
-            position: absolute;
-            bottom: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .title {
-                font-size: 2.5rem;
-            }
-            .subtitle {
-                font-size: 1.3rem;
-                margin-bottom: 2rem;
-            }
-            .start-button {
-                font-size: 1.2rem;
-                padding: 12px 24px;
-            }
-            .bottom-left-image {
-                width: 180px; /* Tamanho reduzido para mobile */
-            }
-        }
+        
+        .dragon { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red"><path d="M12 2L4 12l8 10 8-10-8-10z"/></svg>'); }
+        .warrior { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange"><path d="M12 2L2 22h20L12 2z"/></svg>'); }
+        .spellcaster { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="purple"><path d="M12 2L2 22h20L12 2z"/></svg>'); }
+        .fiend { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="darkred"><path d="M12 2L2 22h20L12 2z"/></svg>'); }
+        .zombie { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="green"><path d="M12 2L2 22h20L12 2z"/></svg>'); }
     </style>
 </head>
 <body class="bg-black text-white">
     <!-- Start Screen -->
-    <div id="startScreen" class="fixed inset-0 z-50 retro-border">
-        <!-- Imagem YUGIOH2.png no canto inferior esquerdo -->
-        <img src="src/assets/images/YUGIOH2.png" class="bottom-left-image" alt="Yu-Gi-Oh! Logo">
-        
-        <div class="content-container">
-            <h1 class="title text-red-500 pixel-text">YU-GI-OH!</h1>
-            <h2 class="subtitle text-yellow-300 pixel-text">RETRO DUEL</h2>
-            
-            <button id="startButton" class="start-button bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg pixel-text retro-border">
-                PRESS START
-            </button>
-            
-            <div class="copyright text-gray-400">
-                <p>© 2025 ALL RIGHTS RESERVED</p>
-            </div>
+    <div id="startScreen" class="fixed inset-0 flex flex-col items-center justify-center bg-black z-50 retro-border">
+        <div class="mb-8 text-center">
+            <h1 class="text-5xl md:text-7xl text-red-500 mb-4 pixel-text">YU-GI-OH!</h1>
+            <h2 class="text-2xl md:text-4xl text-yellow-300 mb-8 pixel-text">RETRO DUEL</h2>
         </div>
         
-        <div class="signature text-gray-500">
-            <p>JHONY WICTOR SANTOS</p>
+        <button id="startButton" class="start-button bg-red-600 hover:bg-red-700 text-white text-2xl md:text-3xl px-8 py-4 mb-12 rounded-lg pixel-text retro-border">
+            PRESS START
+        </button>
+        
+        <div class="text-xs text-gray-400 mt-4">
+            <p>© 2023 ALL RIGHTS RESERVED</p>
+        </div>
+        
+        <div class="absolute bottom-4 left-4 text-xs text-gray-500">
+            <p>INSPIRED BY BOMBERMAN 2 & SUPER MARIO BROS</p>
         </div>
     </div>
     
