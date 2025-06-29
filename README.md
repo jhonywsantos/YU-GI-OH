@@ -4,7 +4,7 @@ Bem-vindo ao **YU-GI-OH!**, um mini game de duelo de cartas inspirado no univers
 ---
 
 ## 📷 Preview
-![Preview do jogo](https://raw.githubusercontent.com/jhonywsantos/YU-GI-OH/main/src/assets/images/Monsters/Dark-Magician.png)
+![Preview do jogo](https://raw.githubusercontent.com/jhonywsantos/YU-GI-OH/main/src/assets/information/YugiohCover.jpeg)
 ---
 
 ## ⚙️ Tecnologias utilizadas
@@ -28,8 +28,11 @@ Bem-vindo ao **YU-GI-OH!**, um mini game de duelo de cartas inspirado no univers
 
 ## 🔥 Funcionalidades
 - Duelo automático entre jogador e bot
+![Preview do jogo](https://raw.githubusercontent.com/jhonywsantos/YU-GI-OH/main/src/assets/information/YugiohDuel.png)
 - Exibição dos atributos (ATK/DEF) das cartas
+![Preview do jogo](https://raw.githubusercontent.com/jhonywsantos/YU-GI-OH/main/src/assets/information/YugiohCards.jpeg)
 - Sistema de pontos de vida com atualização dinâmica
+![Preview do jogo](https://raw.githubusercontent.com/jhonywsantos/YU-GI-OH/main/src/assets/information/YugiohWinner.jpeg)
 - Animações e efeitos visuais ao estilo clássico 8-bit
 ---
 
