@@ -366,6 +366,7 @@
     <div id="gameOverScreen" class="hidden fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-80 z-50">
         <div class="bg-gray-900 p-8 rounded-lg retro-border text-center">
             <h2 id="gameOverText" class="text-4xl mb-6 text-red-500 pixel-text"></h2>
+            <div id="roundResults" class="text-xl mb-4 text-white"></div>
             <button id="playAgainButton" class="bg-green-600 hover:bg-green-700 text-white text-xl px-6 py-3 rounded-lg pixel-text retro-border">
                 PLAY AGAIN
             </button>
@@ -394,7 +395,10 @@
             playerCards: [],
             botCards: [],
             currentRound: 1,
-            gameActive: false
+            gameActive: false,
+            playerWins: 0,
+            botWins: 0,
+            draws: 0
         };
         
         // DOM Elements
@@ -411,6 +415,7 @@
         const playerHealthDisplay = document.getElementById('playerHealth');
         const botHealthDisplay = document.getElementById('botHealth');
         const gameOverText = document.getElementById('gameOverText');
+        const roundResults = document.getElementById('roundResults');
         
         // Initialize Game
         function initGame() {
@@ -421,8 +426,24 @@
                 playerCards: [],
                 botCards: [],
                 currentRound: 1,
-                gameActive: true
+                gameActive: true,
+                playerWins: 0,
+                botWins: 0,
+                draws: 0
             };
+            
+            // Reset hearts to full color
+            const playerHearts = playerHealthDisplay.querySelectorAll('.fa-heart');
+            playerHearts.forEach(heart => {
+                heart.classList.remove('text-gray-500');
+                heart.classList.add('text-red-500');
+            });
+            
+            const botHearts = botHealthDisplay.querySelectorAll('.fa-heart');
+            botHearts.forEach(heart => {
+                heart.classList.remove('text-gray-500');
+                heart.classList.add('text-blue-500');
+            });
             
             // Deal cards
             dealCards();
@@ -515,12 +536,12 @@
             
             // Bot plays a card after a short delay
             setTimeout(() => {
-                botPlayCard();
+                botPlayCard(playerCard);
             }, 1000);
         }
         
         // Bot plays a card
-        function botPlayCard() {
+        function botPlayCard(playerCard) {
             if (!gameState.gameActive) return;
             
             // Bot selects a random card
@@ -552,7 +573,7 @@
             
             // Resolve battle after cards are played
             setTimeout(() => {
-                resolveBattle(botCard, gameState.playerCards[0]); // Player's card is already removed, so we use the first one
+                resolveBattle(botCard, playerCard);
             }, 1000);
         }
         
@@ -562,7 +583,14 @@
             
             if (playerCard.attack > botCard.attack) {
                 // Player wins the round
-                const damage = Math.floor((playerCard.attack - botCard.attack) / 100);
+                gameState.playerWins++;
+                
+                // Calculate damage based on defense
+                let damage = 10; // Default 10% damage
+                if (botCard.defense < playerCard.attack) {
+                    damage = 20; // 20% damage if DEF < ATK
+                }
+                
                 gameState.botHealth = Math.max(0, gameState.botHealth - damage);
                 battleResult.textContent = `PLAYER WINS! -${damage}%`;
                 battleResult.className = 'text-2xl text-green-500 mx-8';
@@ -570,9 +598,20 @@
                 
                 // Apply damage effect to bot
                 botHealthDisplay.classList.add('damage-effect');
+                
+                // Update bot hearts based on percentage
+                updateHeartsDisplay();
+                
             } else if (playerCard.attack < botCard.attack) {
                 // Bot wins the round
-                const damage = Math.floor((botCard.attack - playerCard.attack) / 100);
+                gameState.botWins++;
+                
+                // Calculate damage based on defense
+                let damage = 10; // Default 10% damage
+                if (playerCard.defense < botCard.attack) {
+                    damage = 20; // 20% damage if DEF < ATK
+                }
+                
                 gameState.playerHealth = Math.max(0, gameState.playerHealth - damage);
                 battleResult.textContent = `BOT WINS! -${damage}%`;
                 battleResult.className = 'text-2xl text-red-500 mx-8';
@@ -580,8 +619,13 @@
                 
                 // Apply damage effect to player
                 playerHealthDisplay.classList.add('damage-effect');
+                
+                // Update player hearts based on percentage
+                updateHeartsDisplay();
+                
             } else {
                 // Tie - both cards have same attack
+                gameState.draws++;
                 battleResult.textContent = `DRAW!`;
                 battleResult.className = 'text-2xl text-yellow-300 mx-8';
                 addToGameLog(`Round ${gameState.currentRound}: Player's ${playerCard.name} and Bot's ${botCard.name} have equal ATK (${playerCard.attack}). It's a draw!`);
@@ -614,6 +658,10 @@
                         const penalty = 10;
                         gameState.playerHealth = Math.max(0, gameState.playerHealth - penalty);
                         addToGameLog(`Player has no cards left! Penalty: -${penalty}% health.`);
+                        
+                        // Update hearts display
+                        updateHeartsDisplay();
+                        
                         updateHealthDisplay();
                         dealCards();
                         checkGameOver();
@@ -622,6 +670,10 @@
                         const penalty = 10;
                         gameState.botHealth = Math.max(0, gameState.botHealth - penalty);
                         addToGameLog(`Bot has no cards left! Penalty: -${penalty}% health.`);
+                        
+                        // Update hearts display
+                        updateHeartsDisplay();
+                        
                         updateHealthDisplay();
                         dealCards();
                         checkGameOver();
@@ -632,12 +684,23 @@
         
         // Update health display
         function updateHealthDisplay() {
-            // Update player health
+            // Update player health text
+            const playerHealthText = playerHealthDisplay.nextElementSibling;
+            playerHealthText.textContent = `${gameState.playerHealth}%`;
+            
+            // Update bot health text
+            const botHealthText = botHealthDisplay.nextElementSibling;
+            botHealthText.textContent = `${gameState.botHealth}%`;
+        }
+        
+        // Update hearts display based on health percentage
+        function updateHeartsDisplay() {
+            // Player hearts
             const playerHearts = playerHealthDisplay.querySelectorAll('.fa-heart');
-            const playerHeartCount = Math.ceil(gameState.playerHealth / 20);
+            const playerFullHearts = Math.ceil(gameState.playerHealth / 20);
             
             playerHearts.forEach((heart, index) => {
-                if (index < playerHeartCount) {
+                if (index < playerFullHearts) {
                     heart.classList.remove('text-gray-500');
                     heart.classList.add('text-red-500');
                 } else {
@@ -646,12 +709,12 @@
                 }
             });
             
-            // Update bot health
+            // Bot hearts
             const botHearts = botHealthDisplay.querySelectorAll('.fa-heart');
-            const botHeartCount = Math.ceil(gameState.botHealth / 20);
+            const botFullHearts = Math.ceil(gameState.botHealth / 20);
             
             botHearts.forEach((heart, index) => {
-                if (index < botHeartCount) {
+                if (index < botFullHearts) {
                     heart.classList.remove('text-gray-500');
                     heart.classList.add('text-blue-500');
                 } else {
@@ -663,28 +726,76 @@
         
         // Check if game is over
         function checkGameOver() {
-            if (gameState.playerHealth <= 0) {
-                endGame(false);
-            } else if (gameState.botHealth <= 0) {
-                endGame(true);
+            if (gameState.playerHealth <= 0 || gameState.botHealth <= 0 || gameState.currentRound > 5) {
+                endGame();
             }
         }
         
         // End the game
-        function endGame(playerWon) {
+        function endGame() {
             gameState.gameActive = false;
             
+            // Determine winner
+            let playerWon = false;
+            let resultMessage = "";
+            
+            if (gameState.playerHealth > gameState.botHealth) {
+                playerWon = true;
+                resultMessage = "YOU WIN!";
+            } else if (gameState.botHealth > gameState.playerHealth) {
+                playerWon = false;
+                resultMessage = "YOU LOSE!";
+            } else {
+                // Health tie - check round wins
+                if (gameState.playerWins > gameState.botWins) {
+                    playerWon = true;
+                    resultMessage = "YOU WIN BY ROUNDS!";
+                } else if (gameState.botWins > gameState.playerWins) {
+                    playerWon = false;
+                    resultMessage = "YOU LOSE BY ROUNDS!";
+                } else {
+                    // Complete tie
+                    resultMessage = "DRAW!";
+                }
+            }
+            
+            // Set loser's health to 0% visually
+            if (gameState.playerHealth <= gameState.botHealth) {
+                gameState.playerHealth = 0;
+                updateHeartsDisplay();
+                updateHealthDisplay();
+            }
+            if (gameState.botHealth <= gameState.playerHealth) {
+                gameState.botHealth = 0;
+                updateHeartsDisplay();
+                updateHealthDisplay();
+            }
+            
+            // Show game over screen
             gameOverScreen.classList.remove('hidden');
             
-            if (playerWon) {
-                gameOverText.textContent = "YOU WIN!";
+            if (resultMessage === "DRAW!") {
+                gameOverText.textContent = resultMessage;
+                gameOverText.className = "text-4xl mb-6 text-yellow-500 pixel-text";
+                addToGameLog("The duel ended in a draw!");
+            } else if (playerWon) {
+                gameOverText.textContent = resultMessage;
                 gameOverText.className = "text-4xl mb-6 text-green-500 pixel-text";
                 addToGameLog("Player wins the duel! Congratulations!");
             } else {
-                gameOverText.textContent = "YOU LOSE!";
+                gameOverText.textContent = resultMessage;
                 gameOverText.className = "text-4xl mb-6 text-red-500 pixel-text";
                 addToGameLog("Bot wins the duel! Better luck next time!");
             }
+            
+            // Show round results
+            roundResults.innerHTML = `
+                <div>Player Wins: ${gameState.playerWins}</div>
+                <div>Bot Wins: ${gameState.botWins}</div>
+                <div>Draws: ${gameState.draws}</div>
+                <div>Player Health: ${gameState.playerHealth}%</div>
+                <div>Bot Health: ${gameState.botHealth}%</div>
+            `;
         }
         
         // Clear battle area
@@ -692,6 +803,8 @@
             playerPlayedCard.classList.add('hidden');
             botPlayedCard.classList.add('hidden');
             battleResult.classList.add('hidden');
+            playerPlayedCard.classList.remove('card-played');
+            botPlayedCard.classList.remove('card-bot-played');
         }
         
         // Add message to game log
