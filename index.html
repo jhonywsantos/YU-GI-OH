@@ -290,7 +290,7 @@
 <body class="bg-black text-white">
     <!-- Start Screen -->
     <div id="startScreen" class="fixed inset-0 z-50 retro-border">
-        <img src="src/assets/images/Monsters/Dark-Magician-Girl.png" class="bottom-left-image" alt="Yu-Gi-Oh! Logo">
+        <img src="src/assets/images/Monsters/Dark-Magician-Girl.png" class="bottom-left-image float-animation" alt="Yu-Gi-Oh! Logo">
         
         <div class="content-container">
             <h1 class="title pixel-text">YU-GI-OH!</h1>
@@ -309,6 +309,21 @@
             <p>JHONY WICTOR SANTOS</p>
         </div>
     </div>
+
+    <style>
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+    </style>
     
     <!-- Game Screen -->
     <div id="gameScreen">
