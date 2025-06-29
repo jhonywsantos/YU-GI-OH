@@ -34,7 +34,6 @@ Bem-vindo ao **YU-GI-OH!**, um mini game de duelo de cartas inspirado no univers
 - Sistema de pontos de vida com atualização dinâmica
 ![Preview do jogo](https://raw.githubusercontent.com/jhonywsantos/YU-GI-OH/main/src/assets/information/YugiohWinner.jpeg)
 - Animações e efeitos visuais ao estilo clássico 8-bit
-![Preview do jogo](https://github.com/jhonywsantos/YU-GI-OH/raw/refs/heads/main/src/assets/information/YugiohAnimation.mp4)
 ---
 
 ## 🚀 Como executar o projeto
