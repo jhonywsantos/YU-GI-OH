@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Yu-Gi-Oh! Duelo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #000;
+            color: #fff;
+            overflow: hidden;
+            image-rendering: pixelated;
+        }
+        
+        .retro-border {
+            border: 4px solid #fff;
+            box-shadow: 
+                0 0 0 4px #000,
+                0 0 0 8px #fff,
+                0 0 0 12px #000;
+        }
+        
+        .pixel-text {
+            text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+        
+        .card {
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px) scale(1.05);
+        }
+        
+        .card-played {
+            animation: playCard 0.5s forwards;
+        }
+        
+        .card-bot-played {
+            animation: botPlayCard 0.5s forwards;
+        }
+        
+        .damage-effect {
+            animation: shake 0.5s;
+        }
+        
+        .win-effect {
+            animation: celebrate 1s infinite;
+        }
+        
+        @keyframes playCard {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-100px) translateX(50px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+        
+        @keyframes botPlayCard {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-100px) translateX(-50px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+        
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+        
+        @keyframes celebrate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .start-button {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .start-button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 45%,
+                rgba(255, 255, 255, 0.8) 50%,
+                rgba(255, 255, 255, 0) 55%
+            );
+            transform: rotate(30deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { left: -50%; }
+            100% { left: 150%; }
+        }
+        
+        .type-icon {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .dragon { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red"><path d="M12 2L4 12l8 10 8-10-8-10z"/></svg>'); }
+        .warrior { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange"><path d="M12 2L2 22h20L12 2z"/></svg>'); }
+        .spellcaster { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="purple"><path d="M12 2L2 22h20L12 2z"/></svg>'); }
+        .fiend { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="darkred"><path d="M12 2L2 22h20L12 2z"/></svg>'); }
+        .zombie { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="green"><path d="M12 2L2 22h20L12 2z"/></svg>'); }
+    </style>
+</head>
+<body class="bg-black text-white">
+    <!-- Start Screen -->
+    <div id="startScreen" class="fixed inset-0 flex flex-col items-center justify-center bg-black z-50 retro-border">
+        <div class="mb-8 text-center">
+            <h1 class="text-5xl md:text-7xl text-red-500 mb-4 pixel-text">YU-GI-OH!</h1>
+            <h2 class="text-2xl md:text-4xl text-yellow-300 mb-8 pixel-text">RETRO DUEL</h2>
+        </div>
+        
+        <button id="startButton" class="start-button bg-red-600 hover:bg-red-700 text-white text-2xl md:text-3xl px-8 py-4 mb-12 rounded-lg pixel-text retro-border">
+            PRESS START
+        </button>
+        
+        <div class="text-xs text-gray-400 mt-4">
+            <p>© 2025 ALL RIGHTS RESERVED</p>
+        </div>
+        
+        <div class="absolute bottom-4 left-50 text-xs text-gray-500">
+            <p>JHONY WICTOR SANTOS</p>
+        </div>
+    </div>
+    
+    <!-- Game Screen -->
+    <div id="gameScreen" class="hidden h-screen flex flex-col">
+        <!-- Health Bars -->
+        <div class="flex justify-between p-4">
+            <div class="flex items-center">
+                <span class="text-red-500 mr-2">PLAYER</span>
+                <div id="playerHealth" class="flex">
+                    <i class="fas fa-heart text-red-500 mx-1"></i>
+                    <i class="fas fa-heart text-red-500 mx-1"></i>
+                    <i class="fas fa-heart text-red-500 mx-1"></i>
+                    <i class="fas fa-heart text-red-500 mx-1"></i>
+                    <i class="fas fa-heart text-red-500 mx-1"></i>
+                </div>
+                <span class="ml-2">100%</span>
+            </div>
+            
+            <div class="flex items-center">
+                <span class="text-blue-500 mr-2">BOT</span>
+                <div id="botHealth" class="flex">
+                    <i class="fas fa-heart text-blue-500 mx-1"></i>
+                    <i class="fas fa-heart text-blue-500 mx-1"></i>
+                    <i class="fas fa-heart text-blue-500 mx-1"></i>
+                    <i class="fas fa-heart text-blue-500 mx-1"></i>
+                    <i class="fas fa-heart text-blue-500 mx-1"></i>
+                </div>
+                <span class="ml-2">100%</span>
+            </div>
+        </div>
+        
+        <!-- Bot Cards -->
+        <div id="botArea" class="flex-1 flex items-center justify-center">
+            <div id="botPlayedCard" class="hidden w-32 h-48 bg-gray-800 rounded-lg border-2 border-blue-500 mx-4"></div>
+        </div>
+        
+        <!-- Battle Area -->
+        <div id="battleArea" class="flex-1 flex items-center justify-center">
+            <div id="playerPlayedCard" class="hidden w-32 h-48 bg-gray-800 rounded-lg border-2 border-red-500 mx-4"></div>
+            <div id="battleResult" class="text-2xl text-yellow-300 mx-8 hidden"></div>
+        </div>
+        
+        <!-- Player Cards -->
+        <div id="playerArea" class="flex-1 flex items-center justify-center">
+            <div id="playerCards" class="flex space-x-4 p-4"></div>
+        </div>
+        
+        <!-- Game Log -->
+        <div id="gameLog" class="h-20 overflow-y-auto bg-gray-900 p-2 text-xs border-t border-gray-700"></div>
+    </div>
+    
+    <!-- Game Over Screen -->
+    <div id="gameOverScreen" class="hidden fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-80 z-50">
+        <div class="bg-gray-900 p-8 rounded-lg retro-border text-center">
+            <h2 id="gameOverText" class="text-4xl mb-6 text-red-500 pixel-text"></h2>
+            <button id="playAgainButton" class="bg-green-600 hover:bg-green-700 text-white text-xl px-6 py-3 rounded-lg pixel-text retro-border">
+                PLAY AGAIN
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Game Data
+        const cards = [
+            { id: 1, name: "Dark Magician", attack: 2500, defense: 2100, type: "spellcaster", image: "https://images.ygoprodeck.com/images/cards/46986414.jpg" },
+            { id: 2, name: "Blue-Eyes White Dragon", attack: 3000, defense: 2500, type: "dragon", image: "https://images.ygoprodeck.com/images/cards/89631139.jpg" },
+            { id: 3, name: "Summoned Skull", attack: 2500, defense: 1200, type: "fiend", image: "https://images.ygoprodeck.com/images/cards/70781052.jpg" },
+            { id: 4, name: "Gaia The Fierce Knight", attack: 2300, defense: 2100, type: "warrior", image: "https://images.ygoprodeck.com/images/cards/66889139.jpg" },
+            { id: 5, name: "Celtic Guardian", attack: 1400, defense: 1200, type: "warrior", image: "https://images.ygoprodeck.com/images/cards/91152256.jpg" },
+            { id: 6, name: "Red-Eyes B. Dragon", attack: 2400, defense: 2000, type: "dragon", image: "https://images.ygoprodeck.com/images/cards/74677422.jpg" },
+            { id: 7, name: "Exodia the Forbidden One", attack: 1000, defense: 1000, type: "spellcaster", image: "https://images.ygoprodeck.com/images/cards/33396948.jpg" },
+            { id: 8, name: "Zombie Warrior", attack: 1200, defense: 900, type: "zombie", image: "https://images.ygoprodeck.com/images/cards/66516792.jpg" },
+            { id: 9, name: "Kuriboh", attack: 300, defense: 200, type: "fiend", image: "https://images.ygoprodeck.com/images/cards/40640057.jpg" },
+            { id: 10, name: "Harpie Lady", attack: 1300, defense: 1400, type: "winged beast", image: "https://images.ygoprodeck.com/images/cards/76812113.jpg" }
+        ];
+        
+        // Game State
+        let gameState = {
+            playerHealth: 100,
+            botHealth: 100,
+            playerCards: [],
+            botCards: [],
+            currentRound: 1,
+            gameActive: false
+        };
+        
+        // DOM Elements
+        const startScreen = document.getElementById('startScreen');
+        const gameScreen = document.getElementById('gameScreen');
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const startButton = document.getElementById('startButton');
+        const playAgainButton = document.getElementById('playAgainButton');
+        const playerCardsContainer = document.getElementById('playerCards');
+        const playerPlayedCard = document.getElementById('playerPlayedCard');
+        const botPlayedCard = document.getElementById('botPlayedCard');
+        const battleResult = document.getElementById('battleResult');
+        const gameLog = document.getElementById('gameLog');
+        const playerHealthDisplay = document.getElementById('playerHealth');
+        const botHealthDisplay = document.getElementById('botHealth');
+        const gameOverText = document.getElementById('gameOverText');
+        
+        // Initialize Game
+        function initGame() {
+            // Reset game state
+            gameState = {
+                playerHealth: 100,
+                botHealth: 100,
+                playerCards: [],
+                botCards: [],
+                currentRound: 1,
+                gameActive: true
+            };
+            
+            // Deal cards
+            dealCards();
+            
+            // Update UI
+            updateHealthDisplay();
+            clearBattleArea();
+            gameLog.innerHTML = '';
+            
+            // Show game screen
+            startScreen.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+            gameOverScreen.classList.add('hidden');
+            
+            addToGameLog("Game started! Select a card to begin the duel!");
+        }
+        
+        // Deal cards to players
+        function dealCards() {
+            // Shuffle cards
+            const shuffledCards = [...cards].sort(() => Math.random() - 0.5);
+            
+            // Deal 5 cards to each player
+            gameState.playerCards = shuffledCards.slice(0, 5);
+            gameState.botCards = shuffledCards.slice(5, 10);
+            
+            // Display player cards
+            renderPlayerCards();
+        }
+        
+        // Render player cards
+        function renderPlayerCards() {
+            playerCardsContainer.innerHTML = '';
+            
+            gameState.playerCards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card w-24 h-36 bg-gray-800 rounded-lg border-2 border-white cursor-pointer flex flex-col p-2';
+                cardElement.dataset.index = index;
+                cardElement.innerHTML = `
+                    <div class="text-xs truncate">${card.name}</div>
+                    <div class="flex-1 flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="text-xl font-bold">${card.attack}</div>
+                            <div class="text-xs">ATK</div>
+                        </div>
+                    </div>
+                    <div class="text-xs flex justify-between items-center">
+                        <span class="type-icon ${card.type}"></span>
+                        <span>${card.defense} DEF</span>
+                    </div>
+                `;
+                
+                cardElement.addEventListener('click', () => playCard(index));
+                playerCardsContainer.appendChild(cardElement);
+            });
+        }
+        
+        // Player plays a card
+        function playCard(index) {
+            if (!gameState.gameActive) return;
+            
+            const playerCard = gameState.playerCards[index];
+            
+            // Display player's played card
+            playerPlayedCard.innerHTML = `
+                <div class="text-xs truncate">${playerCard.name}</div>
+                <div class="flex-1 flex items-center justify-center">
+                    <div class="text-center">
+                        <div class="text-xl font-bold">${playerCard.attack}</div>
+                        <div class="text-xs">ATK</div>
+                    </div>
+                </div>
+                <div class="text-xs flex justify-between items-center">
+                    <span class="type-icon ${playerCard.type}"></span>
+                    <span>${playerCard.defense} DEF</span>
+                </div>
+            `;
+            playerPlayedCard.classList.remove('hidden');
+            playerPlayedCard.classList.add('card-played');
+            
+            // Remove the played card from player's hand
+            gameState.playerCards.splice(index, 1);
+            renderPlayerCards();
+            
+            // Bot plays a card after a short delay
+            setTimeout(() => {
+                botPlayCard();
+            }, 1000);
+        }
+        
+        // Bot plays a card
+        function botPlayCard() {
+            if (!gameState.gameActive) return;
+            
+            // Bot selects a random card
+            const randomIndex = Math.floor(Math.random() * gameState.botCards.length);
+            const botCard = gameState.botCards[randomIndex];
+            
+            // Display bot's played card
+            botPlayedCard.innerHTML = `
+                <div class="text-xs truncate">${botCard.name}</div>
+                <div class="flex-1 flex items-center justify-center">
+                    <div class="text-center">
+                        <div class="text-xl font-bold">${botCard.attack}</div>
+                        <div class="text-xs">ATK</div>
+                    </div>
+                </div>
+                <div class="text-xs flex justify-between items-center">
+                    <span class="type-icon ${botCard.type}"></span>
+                    <span>${botCard.defense} DEF</span>
+                </div>
+            `;
+            botPlayedCard.classList.remove('hidden');
+            botPlayedCard.classList.add('card-bot-played');
+            
+            // Remove the played card from bot's hand
+            gameState.botCards.splice(randomIndex, 1);
+            
+            // Resolve battle after cards are played
+            setTimeout(() => {
+                resolveBattle(botCard, gameState.playerCards[0]); // Player's card is already removed, so we use the first one
+            }, 1000);
+        }
+        
+        // Resolve battle between cards
+        function resolveBattle(botCard, playerCard) {
+            const playerCardElement = document.querySelector(`.card[data-index="0"]`);
+            if (playerCardElement) playerCardElement.classList.add('damage-effect');
+            
+            battleResult.classList.remove('hidden');
+            
+            if (playerCard.attack > botCard.attack) {
+                // Player wins the round
+                const damage = Math.floor((playerCard.attack - botCard.attack) / 100);
+                gameState.botHealth = Math.max(0, gameState.botHealth - damage);
+                battleResult.textContent = `PLAYER WINS! -${damage}%`;
+                battleResult.className = 'text-2xl text-green-500 mx-8';
+                addToGameLog(`Round ${gameState.currentRound}: Player's ${playerCard.name} (${playerCard.attack} ATK) defeats Bot's ${botCard.name} (${botCard.attack} ATK). Bot loses ${damage}% health.`);
+                
+                // Apply damage effect to bot
+                botHealthDisplay.classList.add('damage-effect');
+            } else if (playerCard.attack < botCard.attack) {
+                // Bot wins the round
+                const damage = Math.floor((botCard.attack - playerCard.attack) / 100);
+                gameState.playerHealth = Math.max(0, gameState.playerHealth - damage);
+                battleResult.textContent = `BOT WINS! -${damage}%`;
+                battleResult.className = 'text-2xl text-red-500 mx-8';
+                addToGameLog(`Round ${gameState.currentRound}: Bot's ${botCard.name} (${botCard.attack} ATK) defeats Player's ${playerCard.name} (${playerCard.attack} ATK). Player loses ${damage}% health.`);
+                
+                // Apply damage effect to player
+                playerHealthDisplay.classList.add('damage-effect');
+            } else {
+                // Tie - both cards have same attack
+                battleResult.textContent = `DRAW!`;
+                battleResult.className = 'text-2xl text-yellow-300 mx-8';
+                addToGameLog(`Round ${gameState.currentRound}: Player's ${playerCard.name} and Bot's ${botCard.name} have equal ATK (${playerCard.attack}). It's a draw!`);
+            }
+            
+            // Update health display
+            updateHealthDisplay();
+            
+            // Remove damage effect after animation
+            setTimeout(() => {
+                playerHealthDisplay.classList.remove('damage-effect');
+                botHealthDisplay.classList.remove('damage-effect');
+            }, 1000);
+            
+            // Check for game over
+            setTimeout(() => {
+                checkGameOver();
+                
+                // If game is still active, prepare for next round
+                if (gameState.gameActive) {
+                    gameState.currentRound++;
+                    clearBattleArea();
+                    
+                    // If players have no cards left, deal new cards
+                    if (gameState.playerCards.length === 0 && gameState.botCards.length === 0) {
+                        dealCards();
+                        addToGameLog("New cards have been dealt to both players!");
+                    } else if (gameState.playerCards.length === 0) {
+                        // Player has no cards but bot does - player loses health
+                        const penalty = 10;
+                        gameState.playerHealth = Math.max(0, gameState.playerHealth - penalty);
+                        addToGameLog(`Player has no cards left! Penalty: -${penalty}% health.`);
+                        updateHealthDisplay();
+                        dealCards();
+                        checkGameOver();
+                    } else if (gameState.botCards.length === 0) {
+                        // Bot has no cards but player does - bot loses health
+                        const penalty = 10;
+                        gameState.botHealth = Math.max(0, gameState.botHealth - penalty);
+                        addToGameLog(`Bot has no cards left! Penalty: -${penalty}% health.`);
+                        updateHealthDisplay();
+                        dealCards();
+                        checkGameOver();
+                    }
+                }
+            }, 2000);
+        }
+        
+        // Update health display
+        function updateHealthDisplay() {
+            // Update player health
+            const playerHearts = playerHealthDisplay.querySelectorAll('.fa-heart');
+            const playerHeartCount = Math.ceil(gameState.playerHealth / 20);
+            
+            playerHearts.forEach((heart, index) => {
+                if (index < playerHeartCount) {
+                    heart.classList.remove('text-gray-500');
+                    heart.classList.add('text-red-500');
+                } else {
+                    heart.classList.remove('text-red-500');
+                    heart.classList.add('text-gray-500');
+                }
+            });
+            
+            // Update bot health
+            const botHearts = botHealthDisplay.querySelectorAll('.fa-heart');
+            const botHeartCount = Math.ceil(gameState.botHealth / 20);
+            
+            botHearts.forEach((heart, index) => {
+                if (index < botHeartCount) {
+                    heart.classList.remove('text-gray-500');
+                    heart.classList.add('text-blue-500');
+                } else {
+                    heart.classList.remove('text-blue-500');
+                    heart.classList.add('text-gray-500');
+                }
+            });
+        }
+        
+        // Check if game is over
+        function checkGameOver() {
+            if (gameState.playerHealth <= 0) {
+                endGame(false);
+            } else if (gameState.botHealth <= 0) {
+                endGame(true);
+            }
+        }
+        
+        // End the game
+        function endGame(playerWon) {
+            gameState.gameActive = false;
+            
+            gameOverScreen.classList.remove('hidden');
+            
+            if (playerWon) {
+                gameOverText.textContent = "YOU WIN!";
+                gameOverText.className = "text-4xl mb-6 text-green-500 pixel-text win-effect";
+                addToGameLog("Player wins the duel! Congratulations!");
+            } else {
+                gameOverText.textContent = "YOU LOSE!";
+                gameOverText.className = "text-4xl mb-6 text-red-500 pixel-text";
+                addToGameLog("Bot wins the duel! Better luck next time!");
+            }
+        }
+        
+        // Clear battle area
+        function clearBattleArea() {
+            playerPlayedCard.classList.add('hidden');
+            botPlayedCard.classList.add('hidden');
+            battleResult.classList.add('hidden');
+        }
+        
+        // Add message to game log
+        function addToGameLog(message) {
+            const logEntry = document.createElement('div');
+            logEntry.className = 'mb-1';
+            logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            gameLog.appendChild(logEntry);
+            gameLog.scrollTop = gameLog.scrollHeight;
+        }
+        
+        // Event Listeners
+        startButton.addEventListener('click', initGame);
+        playAgainButton.addEventListener('click', initGame);
+    </script>
+</body>
+</html>
