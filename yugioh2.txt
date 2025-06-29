@@ -137,6 +137,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            flex-grow: 1;
         }
 
         .card-atk {
@@ -148,20 +149,6 @@
         .card-def {
             font-size: 14px;
             color: #3366ff;
-        }
-
-        .card-image-container {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        .card-image-container img {
-            max-width: 100%;
-            max-height: 80px;
-            object-fit: contain;
         }
 
         .game-log {
@@ -281,9 +268,6 @@
                 width: 90px;
                 height: 135px;
             }
-            .card-image-container img {
-                max-height: 60px;
-            }
         }
     </style>
 </head>
@@ -375,16 +359,16 @@
     <script>
         // Game Data
         const cards = [
-            { id: 1, name: "Dark Magician", attack: 2500, defense: 2100, type: "spellcaster", image: "src/assets/images/Monsters/Dark-Magician.png" },
-            { id: 2, name: "Blue-Eyes White Dragon", attack: 3000, defense: 2500, type: "dragon", image: "src/assets/images/Monsters/Blue-Eyes-White-Dragon.png" },
-            { id: 3, name: "Summoned Skull", attack: 2500, defense: 1200, type: "fiend", image: "src/assets/images/Monsters/Summoned-Skull.png" },
-            { id: 4, name: "Gaia The Fierce Knight", attack: 2300, defense: 2100, type: "warrior", image: "src/assets/images/Monsters/Gaia-The-Fierce-Knight.jpg" },
-            { id: 5, name: "Celtic Guardian", attack: 1400, defense: 1200, type: "warrior", image: "src/assets/images/Monsters/Celtic-Guardian.png" },
-            { id: 6, name: "Red-Eyes B. Dragon", attack: 2400, defense: 2000, type: "dragon", image: "src/assets/images/Monsters/Red-Eyes-B-Dragon.png" },
-            { id: 7, name: "Exodia the Forbidden One", attack: 1000, defense: 1000, type: "spellcaster", image: "src/assets/images/Monsters/Exodia-the-Forbidden-One.png" },
-            { id: 8, name: "Zombie Warrior", attack: 1200, defense: 900, type: "zombie", image: "src/assets/images/Monsters/Zombie-Warrior.jpeg" },
-            { id: 9, name: "Kuriboh", attack: 300, defense: 200, type: "fiend", image: "src/assets/images/Monsters/Kuriboh.jpg" },
-            { id: 10, name: "Harpie Lady", attack: 1300, defense: 1400, type: "winged beast", image: "src/assets/images/Monsters/Harpie-Lady.png" }
+            { id: 1, name: "Dark Magician", attack: 2500, defense: 2100, type: "spellcaster", image: "https://images.ygoprodeck.com/images/cards_cropped/46986414.jpg" },
+            { id: 2, name: "Blue-Eyes White Dragon", attack: 3000, defense: 2500, type: "dragon", image: "https://images.ygoprodeck.com/images/cards_cropped/89631139.jpg" },
+            { id: 3, name: "Summoned Skull", attack: 2500, defense: 1200, type: "fiend", image: "https://images.ygoprodeck.com/images/cards_cropped/70781052.jpg" },
+            { id: 4, name: "Gaia The Fierce Knight", attack: 2300, defense: 2100, type: "warrior", image: "https://images.ygoprodeck.com/images/cards_cropped/66889139.jpg" },
+            { id: 5, name: "Celtic Guardian", attack: 1400, defense: 1200, type: "warrior", image: "https://images.ygoprodeck.com/images/cards_cropped/91152256.jpg" },
+            { id: 6, name: "Red-Eyes B. Dragon", attack: 2400, defense: 2000, type: "dragon", image: "https://images.ygoprodeck.com/images/cards_cropped/74677422.jpg" },
+            { id: 7, name: "Exodia the Forbidden One", attack: 1000, defense: 1000, type: "spellcaster", image: "https://images.ygoprodeck.com/images/cards_cropped/33396948.jpg" },
+            { id: 8, name: "Zombie Warrior", attack: 1200, defense: 900, type: "zombie", image: "https://images.ygoprodeck.com/images/cards_cropped/66516792.jpg" },
+            { id: 9, name: "Kuriboh", attack: 300, defense: 200, type: "fiend", image: "https://images.ygoprodeck.com/images/cards_cropped/40640057.jpg" },
+            { id: 10, name: "Harpie Lady", attack: 1300, defense: 1400, type: "winged beast", image: "https://images.ygoprodeck.com/images/cards_cropped/76812113.jpg" }
         ];
         
         // Game State
@@ -463,9 +447,6 @@
                 cardElement.dataset.index = index;
                 cardElement.innerHTML = `
                     <div class="card-name">${card.name}</div>
-                    <div class="card-image-container">
-                        <img src="${card.image}" alt="${card.name}">
-                    </div>
                     <div class="card-stats">
                         <div class="text-center">
                             <div class="card-atk">${card.attack}</div>
@@ -492,9 +473,6 @@
             // Display player's played card
             playerPlayedCard.innerHTML = `
                 <div class="card-name">${playerCard.name}</div>
-                <div class="card-image-container">
-                    <img src="${playerCard.image}" alt="${playerCard.name}">
-                </div>
                 <div class="card-stats">
                     <div class="text-center">
                         <div class="card-atk">${playerCard.attack}</div>
@@ -530,9 +508,6 @@
             // Display bot's played card
             botPlayedCard.innerHTML = `
                 <div class="card-name">${botCard.name}</div>
-                <div class="card-image-container">
-                    <img src="${botCard.image}" alt="${botCard.name}">
-                </div>
                 <div class="card-stats">
                     <div class="text-center">
                         <div class="card-atk">${botCard.attack}</div>
