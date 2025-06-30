@@ -40,7 +40,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
                         url('src/assets/images/YUGIOH1.png') no-repeat center center;
             background-size: cover;
             transition: opacity 0.5s ease;
@@ -52,7 +52,7 @@
             position: relative;
             width: 100%;
             height: 100vh;
-            background: linear-gradient(rgba(0, 0, 20, 0.9), rgba(0, 0, 40, 0.9)),
+            background: linear-gradient(rgba(0, 0, 20, 0.9), rgba(0, 0, 40, 0.9)), 
                         url('s') no-repeat center center;
             background-size: cover;
             display: none;
@@ -95,7 +95,6 @@
             border-radius: 8px;
             margin: 10px 0;
             padding: 20px;
-            position: relative;
         }
 
         .card {
@@ -183,7 +182,7 @@
         .card-bot-played {
             animation: botCardPlay 0.5s forwards;
         }
-
+        
         @keyframes playerCardPlay {
             0% { transform: translateY(0); }
             100% { transform: translateY(-50px); }
@@ -366,55 +365,6 @@
             transform: scale(1.05);
         }
 
-        /* Monster display styles */
-        .monster-display {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 5;
-        }
-
-        .player-monster {
-            left: 50px;
-            bottom: 50px;
-            transform: scaleX(-1); /* Flip horizontally to face opponent */
-        }
-
-        .bot-monster {
-            right: 50px;
-            top: 50px;
-        }
-
-        .monster-image {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.7));
-            transition: all 0.3s ease;
-        }
-
-        .monster-appear {
-            animation: monsterAppear 0.5s ease-out forwards;
-        }
-
-        .monster-disappear {
-            animation: monsterDisappear 0.3s ease-in forwards;
-        }
-
-        @keyframes monsterAppear {
-            0% { transform: scale(0.5); opacity: 0; }
-            80% { transform: scale(1.1); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes monsterDisappear {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(0.5); opacity: 0; }
-        }
-
         @media (max-width: 768px) {
             .title {
                 font-size: 2.5rem;
@@ -450,40 +400,13 @@
             .guide-text {
                 font-size: 0.7rem;
             }
-            .monster-display {
-                width: 150px;
-                height: 150px;
-            }
-            .player-monster {
-                left: 20px;
-                bottom: 20px;
-            }
-            .bot-monster {
-                right: 20px;
-                top: 20px;
-            }
-        }
-
-        /* Efeitos especiais para Dark Hole */
-        .text-purple-500 {
-            color: #a855f7;
-        }
-
-        @keyframes darkHoleEffect {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.5); opacity: 0.7; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .dark-hole-animation {
-            animation: darkHoleEffect 1s infinite;
         }
     </style>
 </head>
 <body class="bg-black text-white">
     <!-- Start Screen -->
     <div id="startScreen" class="fixed inset-0 z-50 retro-border">
-        <img src="src/assets/images/DM2.png" class="bottom-left-image float-animation" alt="Yu-Gi-Oh! Logo">
+        <img src="src/assets/images/Monsters/Dark-Magician-Girl.png" class="bottom-left-image float-animation" alt="Yu-Gi-Oh! Logo">
         
         <div class="content-container">
             <h1 class="title pixel-text">YU-GI-OH!</h1>
@@ -537,7 +460,6 @@
                 <ul class="guide-list pixel-text">
                     <li>Life is only reduced if there's a round winner</li>
                     <li>Each round (except draws) results in life loss for someone</li>
-                    <li>Special cards like "Dark Hole" have instant win effects</li>
                 </ul>
             </div>
             
@@ -548,7 +470,6 @@
                     <li>If life is tied, winner is decided by most round wins</li>
                     <li>If still tied, result is considered a total draw</li>
                     <li>Defeated player's life bar visually ends at 0% (even if technically higher) for visual impact</li>
-                    <li>Special effects like "Dark Hole" result in instant victory with no rematch</li>
                 </ul>
             </div>
             
@@ -608,24 +529,9 @@
             
             <!-- Battle Area -->
             <div class="battle-area">
-                <!-- Player Monster Display -->
-                <div id="playerMonster" class="monster-display player-monster hidden">
-                    <img id="playerMonsterImage" class="monster-image" src="" alt="Player's Monster">
-                </div>
-                
-                <!-- Player Card -->
                 <div id="playerPlayedCard" class="card player-card hidden"></div>
-                
-                <!-- Battle Result -->
                 <div id="battleResult" class="text-2xl text-yellow-300 mx-8 hidden"></div>
-                
-                <!-- Bot Card -->
                 <div id="botPlayedCard" class="card bot-card hidden"></div>
-                
-                <!-- Bot Monster Display -->
-                <div id="botMonster" class="monster-display bot-monster hidden">
-                    <img id="botMonsterImage" class="monster-image" src="" alt="Bot's Monster">
-                </div>
             </div>
             
             <!-- Player Cards Area -->
@@ -658,7 +564,7 @@
             { id: 4, name: "Gaia T.F. Knight", attack: 2300, defense: 2100, type: "warrior", image: "src/assets/images/Monsters/Gaia-The-Fierce-Knight.jpg" },
             { id: 5, name: "Celtic Guardian", attack: 1400, defense: 1200, type: "warrior", image: "src/assets/images/Monsters/Celtic-Guardian.png" },
             { id: 6, name: "Red-Eyes B. Dragon", attack: 2400, defense: 2000, type: "dragon", image: "src/assets/images/Monsters/Red-Eyes-B-Dragon.png" },
-            { id: 7, name: "Exodia Forbidden One", attack: 3500, defense: 5600, type: "spellcaster", image: "src/assets/images/Monsters/Exodia-the-Forbidden-One.png" },
+            { id: 7, name: "Exodia t. Forbidden One", attack: 1000, defense: 1000, type: "spellcaster", image: "src/assets/images/Monsters/Exodia-the-Forbidden-One.png" },
             { id: 8, name: "Zombie Warrior", attack: 1200, defense: 900, type: "zombie", image: "src/assets/images/Monsters/Zombie-Warrior.jpeg" },
             { id: 9, name: "Kuriboh", attack: 300, defense: 200, type: "fiend", image: "src/assets/images/Monsters/Kuriboh.jpg" },
             { id: 10, name: "Harpie Lady", attack: 1300, defense: 1400, type: "winged beast", image: "src/assets/images/Monsters/Harpie-Lady.png" },
@@ -666,50 +572,26 @@
             { id: 12, name: "Buster Blader", attack: 2600, defense: 2300, type: "warrior", image: "src/assets/images/Monsters/Buster-Blader.jpg" },
             { id: 13, name: "Jinzo", attack: 2400, defense: 1500, type: "machine", image: "src/assets/images/Monsters/Jinzo.png" },
             { id: 14, name: "Black Luster Soldier", attack: 3000, defense: 2500, type: "warrior", image: "src/assets/images/Monsters/Black-Luster-Soldier.jpg" },
-            { id: 15, name: "Obelisk Tormentor", attack: 4000, defense: 4000, type: "divine-beast", image: "src/assets/images/Monsters/Obelisk-the-Tormentor.jpg" },
+            { id: 15, name: "Obelisk t. Tormentor", attack: 4000, defense: 4000, type: "divine-beast", image: "src/assets/images/Monsters/Obelisk-the-Tormentor.jpg" },
+
             { 
-                id: 16, 
-                name: "Slifer Sky Dragon", 
-                attack: 5000, 
-                defense: 5000, 
-                type: "divine-beast", 
-                image: "src/assets/images/Monsters/Slifer-the-Sky-Dragon.png",
-                dynamicEffect: "ATK = 1000 × cards in hand. If opponent summons a monster in attack mode, it loses 2000 ATK. If its ATK becomes 0, destroy it." 
-            },
+            id: 16, 
+            name: "Slifer the Sky Dragon", 
+            attack: 1000, 
+            defense: 3000, 
+            type: "divine-beast", 
+            image: "src/assets/images/Monsters/Slifer-the-Sky-Dragon.png",
+            dynamicEffect: "ATK = 1000 × cards in hand. If opponent summons a monster in attack mode, it loses 2000 ATK. If its ATK becomes 0, destroy it." },
+
             { id: 17, name: "The W. Dragon of Ra", attack: 7400, defense: 5300, type: "divine-beast", image: "src/assets/images/Monsters/The-Winged-Dragon-of-Ra.jpeg" },
             { id: 18, name: "Time Wizard", attack: 500, defense: 400, type: "spellcaster", image: "src/assets/images/Monsters/Time-Wizard.jpeg" },
             { id: 19, name: "Baby Dragon", attack: 1200, defense: 700, type: "dragon", image: "src/assets/images/Monsters/Baby-Dragon.jpeg" },
             { id: 20, name: "Thousand Dragon", attack: 2400, defense: 2000, type: "dragon", image: "src/assets/images/Monsters/Thousand-Dragon.jpeg" },
             { id: 21, name: "Magician of Chaos", attack: 2800, defense: 2600, type: "spellcaster", image: "src/assets/images/Monsters/Magician-of-Black-Chaos.jpeg" },
             { id: 22, name: "Mystical Elf", attack: 800, defense: 2000, type: "spellcaster", image: "src/assets/images/Monsters/Mystical-Elf.jpeg" },
-            { 
-                id: 23, 
-                name: "Dark Hole", 
-                attack: 0, 
-                defense: 0, 
-                type: "spell", 
-                image: "src/assets/images/Monsters/Dark-Hole.png", 
-                specialEffect: "Eliminates all opponent's monsters upon being drawn or played. Instant victory. No rematch allowed." 
-            },
-            { id: 24, name: "La Jinn", attack: 1800, defense: 1000, type: "fiend", image: "src/assets/images/Monsters/La-Jinn.jpeg" },
-            { id: 25, name: "Man-Eater Bug", attack: 450, defense: 600, type: "insect", image: "src/assets/images/Monsters/Man-Eater-Bug.jpeg" },
-            { id: 26, name: "Toon S. Skull", attack: 2500, defense: 1200, type: "fiend", image: "src/assets/images/Monsters/Toon-Summoned-Skull.jpeg" },
-            { id: 27, name: "Beaver Warrior", attack: 1200, defense: 1500, type: "beast-warrior", image: "src/assets/images/Monsters/Beaver-Warrior.png" },
-            { id: 28, name: "Great White", attack: 1600, defense: 800, type: "fish", image: "src/assets/images/Monsters/Great-White.png" },
-            { id: 29, name: "Battle Ox", attack: 1700, defense: 1000, type: "beast-warrior", image: "src/assets/images/Monsters/Battle-Ox.png" },
-            { id: 30, name: "Judge Man", attack: 2200, defense: 1500, type: "warrior", image: "src/assets/images/Monsters/Judge-Man.png" },
-            { id: 31, name: "Mystic Clown", attack: 1500, defense: 1000, type: "fiend", image: "src/assets/images/Monsters/Mystic-Clown.png" },
-            { id: 32, name: "Giant S. Stone", attack: 1300, defense: 2000, type: "rock", image: "src/assets/images/Monsters/Giant-Soldier-of-Stone.png" },
-            { id: 33, name: "Cannon Soldier", attack: 1400, defense: 1300, type: "machine", image: "src/assets/images/Monsters/Cannon-Soldier.jpg" },
-            { id: 34, name: "Skull Servant", attack: 300, defense: 200, type: "zombie", image: "src/assets/images/Monsters/Skull-Servant.jpg" },
-            { id: 35, name: "W.D.G Fortress #1", attack: 1400, defense: 1200, type: "dragon", image: "src/assets/images/Monsters/Winged-Dragon-Guardian-of-the-Fortress-1.png" },
-            { id: 36, name: "Trap Master", attack: 500, defense: 1100, type: "warrior", image: "src/assets/images/Monsters/Trap-Master.png" },
-            { id: 37, name: "Five-Headed Dragon", attack: 5000, defense: 5000, type: "dragon", image: "src/assets/images/Monsters/Five-Headed-Dragon.png" },
-            { id: 38, name: "B-E U. Dragon", attack: 4500, defense: 3800, type: "dragon", image: "src/assets/images/Monsters/Blue-Eyes-Ultimate-Dragon.png" },
-            { id: 39, name: "Cyber E. Dragon", attack: 4000, defense: 2800, type: "machine", image: "src/assets/images/Monsters/Cyber-End-Dragon.png" },
-            { id: 40, name: "Gemini Elf", attack: 1900, defense: 900, type: "spellcaster", image: "src/assets/images/Monsters/Gemini-Elf.jpeg" },
 
 
+            
         ];
         
         // Game State
@@ -743,16 +625,9 @@
         const botHealthDisplay = document.getElementById('botHealth');
         const gameOverText = document.getElementById('gameOverText');
         const roundResults = document.getElementById('roundResults');
-        const playerMonster = document.getElementById('playerMonster');
-        const playerMonsterImage = document.getElementById('playerMonsterImage');
-        const botMonster = document.getElementById('botMonster');
-        const botMonsterImage = document.getElementById('botMonsterImage');
         
         // Initialize Game
         function initGame() {
-            // Reativar botão de jogar novamente
-            playAgainButton.style.display = 'block';
-            
             // Reset game state
             gameState = {
                 playerHealth: 100,
@@ -804,12 +679,6 @@
             gameState.playerCards = shuffledCards.slice(0, 5);
             gameState.botCards = shuffledCards.slice(5, 10);
             
-            // Verificar se o jogador recebeu a Dark Hole
-            const hasDarkHole = gameState.playerCards.some(card => card.name === "Dark Hole");
-            if (hasDarkHole) {
-                addToGameLog("You drew Dark Hole! Play it to instantly win the duel!");
-            }
-            
             // Display player cards
             renderPlayerCards();
         }
@@ -850,12 +719,6 @@
             
             const playerCard = gameState.playerCards[index];
             
-            // Verificar se a carta é Dark Hole com efeito especial
-            if (playerCard.specialEffect) {
-                activateSpecialEffect(playerCard);
-                return;
-            }
-            
             // Display player's played card
             playerPlayedCard.innerHTML = `
                 <div class="card-name">${playerCard.name}</div>
@@ -876,12 +739,6 @@
             playerPlayedCard.classList.remove('hidden');
             playerPlayedCard.classList.add('card-played');
             
-            // Show player's monster
-            playerMonsterImage.src = playerCard.image;
-            playerMonsterImage.alt = playerCard.name;
-            playerMonster.classList.remove('hidden');
-            playerMonster.classList.add('monster-appear');
-            
             // Remove the played card from player's hand
             gameState.playerCards.splice(index, 1);
             renderPlayerCards();
@@ -890,66 +747,6 @@
             setTimeout(() => {
                 botPlayCard(playerCard);
             }, 1000);
-        }
-        
-        // Ativar efeito especial da carta
-        function activateSpecialEffect(card) {
-            if (card.name === "Dark Hole") {
-                // Mostrar a carta jogada
-                playerPlayedCard.innerHTML = `
-                    <div class="card-name">${card.name}</div>
-                    <div class="card-image-container">
-                        <img src="${card.image}" alt="${card.name}">
-                    </div>
-                    <div class="card-stats">
-                        <div class="text-center">
-                            <div class="card-atk">${card.attack}</div>
-                            <div class="text-xs">ATK</div>
-                        </div>
-                        <div class="text-xs flex justify-between items-center mt-2">
-                            <span>${card.defense}</span>
-                            <span class="card-def">DEF</span>
-                        </div>
-                    </div>
-                `;
-                playerPlayedCard.classList.remove('hidden');
-                playerPlayedCard.classList.add('card-played');
-                playerPlayedCard.classList.add('dark-hole-animation');
-                
-                // Remover a carta da mão do jogador
-                const cardIndex = gameState.playerCards.findIndex(c => c.id === card.id);
-                if (cardIndex !== -1) {
-                    gameState.playerCards.splice(cardIndex, 1);
-                }
-                renderPlayerCards();
-                
-                // Efeito visual especial
-                addToGameLog(`Player activates ${card.name} - ${card.specialEffect}`);
-                
-                // Animação especial para o efeito
-                battleResult.textContent = "DARK HOLE ACTIVATED!";
-                battleResult.className = 'text-2xl text-purple-500 mx-8';
-                battleResult.classList.remove('hidden');
-                
-                // Efeito de destruição das cartas do oponente
-                setTimeout(() => {
-                    // Eliminar todas as cartas do bot
-                    gameState.botCards = [];
-                    
-                    // Zerar a vida do bot
-                    gameState.botHealth = 0;
-                    updateHealthDisplay();
-                    updateHeartsDisplay();
-                    
-                    // Mostrar mensagem de vitória
-                    battleResult.textContent = "OPPONENT ANNIHILATED!";
-                    
-                    // Finalizar o jogo com vitória automática
-                    setTimeout(() => {
-                        endGameWithSpecialWin();
-                    }, 2000);
-                }, 1500);
-            }
         }
         
         // Bot plays a card
@@ -979,12 +776,6 @@
             `;
             botPlayedCard.classList.remove('hidden');
             botPlayedCard.classList.add('card-bot-played');
-            
-            // Show bot's monster
-            botMonsterImage.src = botCard.image;
-            botMonsterImage.alt = botCard.name;
-            botMonster.classList.remove('hidden');
-            botMonster.classList.add('monster-appear');
             
             // Remove the played card from bot's hand
             gameState.botCards.splice(randomIndex, 1);
@@ -1065,69 +856,39 @@
                 // If game is still active, prepare for next round
                 if (gameState.gameActive) {
                     gameState.currentRound++;
+                    clearBattleArea();
                     
-                    // Hide monsters before clearing battle area
-                    playerMonster.classList.remove('monster-appear');
-                    playerMonster.classList.add('monster-disappear');
-                    botMonster.classList.remove('monster-appear');
-                    botMonster.classList.add('monster-disappear');
-                    
-                    setTimeout(() => {
-                        clearBattleArea();
+                    // If players have no cards left, deal new cards
+                    if (gameState.playerCards.length === 0 && gameState.botCards.length === 0) {
+                        dealCards();
+                        addToGameLog("New cards have been dealt to both players!");
+                    } else if (gameState.playerCards.length === 0) {
+                        // Player has no cards but bot does - player loses health
+                        const penalty = 10;
+                        gameState.playerHealth = Math.max(0, gameState.playerHealth - penalty);
+                        addToGameLog(`Player has no cards left! Penalty: -${penalty}% health.`);
                         
-                        // If players have no cards left, deal new cards
-                        if (gameState.playerCards.length === 0 && gameState.botCards.length === 0) {
-                            dealCards();
-                            addToGameLog("New cards have been dealt to both players!");
-                        } else if (gameState.playerCards.length === 0) {
-                            // Player has no cards but bot does - player loses health
-                            const penalty = 10;
-                            gameState.playerHealth = Math.max(0, gameState.playerHealth - penalty);
-                            addToGameLog(`Player has no cards left! Penalty: -${penalty}% health.`);
-                            
-                            // Update hearts display
-                            updateHeartsDisplay();
-                            
-                            updateHealthDisplay();
-                            dealCards();
-                            checkGameOver();
-                        } else if (gameState.botCards.length === 0) {
-                            // Bot has no cards but player does - bot loses health
-                            const penalty = 10;
-                            gameState.botHealth = Math.max(0, gameState.botHealth - penalty);
-                            addToGameLog(`Bot has no cards left! Penalty: -${penalty}% health.`);
-                            
-                            // Update hearts display
-                            updateHeartsDisplay();
-                            
-                            updateHealthDisplay();
-                            dealCards();
-                            checkGameOver();
-                        }
-                    }, 300); // Wait for monster disappear animation to complete
+                        // Update hearts display
+                        updateHeartsDisplay();
+                        
+                        updateHealthDisplay();
+                        dealCards();
+                        checkGameOver();
+                    } else if (gameState.botCards.length === 0) {
+                        // Bot has no cards but player does - bot loses health
+                        const penalty = 10;
+                        gameState.botHealth = Math.max(0, gameState.botHealth - penalty);
+                        addToGameLog(`Bot has no cards left! Penalty: -${penalty}% health.`);
+                        
+                        // Update hearts display
+                        updateHeartsDisplay();
+                        
+                        updateHealthDisplay();
+                        dealCards();
+                        checkGameOver();
+                    }
                 }
             }, 2000);
-        }
-        
-        // Finalizar o jogo com vitória especial
-        function endGameWithSpecialWin() {
-            gameState.gameActive = false;
-            
-            // Mostrar game over screen com mensagem especial
-            gameOverScreen.classList.remove('hidden');
-            gameOverText.textContent = "VICTORY BY DARK HOLE!";
-            gameOverText.className = "text-4xl mb-6 text-purple-500 pixel-text";
-            
-            roundResults.innerHTML = `
-                <div>Player activated Dark Hole!</div>
-                <div>All opponent's monsters were destroyed!</div>
-                <div>Instant victory!</div>
-            `;
-            
-            // Desabilitar o botão de jogar novamente para este tipo de vitória
-            playAgainButton.style.display = 'none';
-            
-            addToGameLog("Dark Hole effect resolved - automatic victory for player!");
         }
         
         // Update health display
@@ -1253,11 +1014,6 @@
             battleResult.classList.add('hidden');
             playerPlayedCard.classList.remove('card-played');
             botPlayedCard.classList.remove('card-bot-played');
-            playerPlayedCard.classList.remove('dark-hole-animation');
-            playerMonster.classList.add('hidden');
-            botMonster.classList.add('hidden');
-            playerMonster.classList.remove('monster-disappear');
-            botMonster.classList.remove('monster-disappear');
         }
         
         // Add message to game log
