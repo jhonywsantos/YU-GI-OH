@@ -40,7 +40,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
                         url('src/assets/images/YUGIOH1.png') no-repeat center center;
             background-size: cover;
             transition: opacity 0.5s ease;
@@ -52,7 +52,7 @@
             position: relative;
             width: 100%;
             height: 100vh;
-            background: linear-gradient(rgba(0, 0, 20, 0.9), rgba(0, 0, 40, 0.9)),
+            background: linear-gradient(rgba(0, 0, 20, 0.9), rgba(0, 0, 40, 0.9)), 
                         url('s') no-repeat center center;
             background-size: cover;
             display: none;
@@ -95,7 +95,6 @@
             border-radius: 8px;
             margin: 10px 0;
             padding: 20px;
-            position: relative;
         }
 
         .card {
@@ -183,7 +182,7 @@
         .card-bot-played {
             animation: botCardPlay 0.5s forwards;
         }
-
+        
         @keyframes playerCardPlay {
             0% { transform: translateY(0); }
             100% { transform: translateY(-50px); }
@@ -366,55 +365,6 @@
             transform: scale(1.05);
         }
 
-        /* Monster display styles */
-        .monster-display {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 5;
-        }
-
-        .player-monster {
-            left: 50px;
-            bottom: 50px;
-            transform: scaleX(-1); /* Flip horizontally to face opponent */
-        }
-
-        .bot-monster {
-            right: 50px;
-            top: 50px;
-        }
-
-        .monster-image {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.7));
-            transition: all 0.3s ease;
-        }
-
-        .monster-appear {
-            animation: monsterAppear 0.5s ease-out forwards;
-        }
-
-        .monster-disappear {
-            animation: monsterDisappear 0.3s ease-in forwards;
-        }
-
-        @keyframes monsterAppear {
-            0% { transform: scale(0.5); opacity: 0; }
-            80% { transform: scale(1.1); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes monsterDisappear {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(0.5); opacity: 0; }
-        }
-
         @media (max-width: 768px) {
             .title {
                 font-size: 2.5rem;
@@ -450,25 +400,13 @@
             .guide-text {
                 font-size: 0.7rem;
             }
-            .monster-display {
-                width: 150px;
-                height: 150px;
-            }
-            .player-monster {
-                left: 20px;
-                bottom: 20px;
-            }
-            .bot-monster {
-                right: 20px;
-                top: 20px;
-            }
         }
     </style>
 </head>
 <body class="bg-black text-white">
     <!-- Start Screen -->
     <div id="startScreen" class="fixed inset-0 z-50 retro-border">
-        <img src="src/assets/images/DM2.png" class="bottom-left-image float-animation" alt="Yu-Gi-Oh! Logo">
+        <img src="src/assets/images/DM1.png" class="bottom-left-image float-animation" alt="Yu-Gi-Oh! Logo">
         
         <div class="content-container">
             <h1 class="title pixel-text">YU-GI-OH!</h1>
@@ -591,24 +529,9 @@
             
             <!-- Battle Area -->
             <div class="battle-area">
-                <!-- Player Monster Display -->
-                <div id="playerMonster" class="monster-display player-monster hidden">
-                    <img id="playerMonsterImage" class="monster-image" src="" alt="Player's Monster">
-                </div>
-                
-                <!-- Player Card -->
                 <div id="playerPlayedCard" class="card player-card hidden"></div>
-                
-                <!-- Battle Result -->
                 <div id="battleResult" class="text-2xl text-yellow-300 mx-8 hidden"></div>
-                
-                <!-- Bot Card -->
                 <div id="botPlayedCard" class="card bot-card hidden"></div>
-                
-                <!-- Bot Monster Display -->
-                <div id="botMonster" class="monster-display bot-monster hidden">
-                    <img id="botMonsterImage" class="monster-image" src="" alt="Bot's Monster">
-                </div>
             </div>
             
             <!-- Player Cards Area -->
@@ -670,6 +593,7 @@
 
             
         ];
+        
         // Game State
         let gameState = {
             playerHealth: 100,
@@ -701,10 +625,6 @@
         const botHealthDisplay = document.getElementById('botHealth');
         const gameOverText = document.getElementById('gameOverText');
         const roundResults = document.getElementById('roundResults');
-        const playerMonster = document.getElementById('playerMonster');
-        const playerMonsterImage = document.getElementById('playerMonsterImage');
-        const botMonster = document.getElementById('botMonster');
-        const botMonsterImage = document.getElementById('botMonsterImage');
         
         // Initialize Game
         function initGame() {
@@ -819,12 +739,6 @@
             playerPlayedCard.classList.remove('hidden');
             playerPlayedCard.classList.add('card-played');
             
-            // Show player's monster
-            playerMonsterImage.src = playerCard.image;
-            playerMonsterImage.alt = playerCard.name;
-            playerMonster.classList.remove('hidden');
-            playerMonster.classList.add('monster-appear');
-            
             // Remove the played card from player's hand
             gameState.playerCards.splice(index, 1);
             renderPlayerCards();
@@ -862,12 +776,6 @@
             `;
             botPlayedCard.classList.remove('hidden');
             botPlayedCard.classList.add('card-bot-played');
-            
-            // Show bot's monster
-            botMonsterImage.src = botCard.image;
-            botMonsterImage.alt = botCard.name;
-            botMonster.classList.remove('hidden');
-            botMonster.classList.add('monster-appear');
             
             // Remove the played card from bot's hand
             gameState.botCards.splice(randomIndex, 1);
@@ -948,46 +856,37 @@
                 // If game is still active, prepare for next round
                 if (gameState.gameActive) {
                     gameState.currentRound++;
+                    clearBattleArea();
                     
-                    // Hide monsters before clearing battle area
-                    playerMonster.classList.remove('monster-appear');
-                    playerMonster.classList.add('monster-disappear');
-                    botMonster.classList.remove('monster-appear');
-                    botMonster.classList.add('monster-disappear');
-                    
-                    setTimeout(() => {
-                        clearBattleArea();
+                    // If players have no cards left, deal new cards
+                    if (gameState.playerCards.length === 0 && gameState.botCards.length === 0) {
+                        dealCards();
+                        addToGameLog("New cards have been dealt to both players!");
+                    } else if (gameState.playerCards.length === 0) {
+                        // Player has no cards but bot does - player loses health
+                        const penalty = 10;
+                        gameState.playerHealth = Math.max(0, gameState.playerHealth - penalty);
+                        addToGameLog(`Player has no cards left! Penalty: -${penalty}% health.`);
                         
-                        // If players have no cards left, deal new cards
-                        if (gameState.playerCards.length === 0 && gameState.botCards.length === 0) {
-                            dealCards();
-                            addToGameLog("New cards have been dealt to both players!");
-                        } else if (gameState.playerCards.length === 0) {
-                            // Player has no cards but bot does - player loses health
-                            const penalty = 10;
-                            gameState.playerHealth = Math.max(0, gameState.playerHealth - penalty);
-                            addToGameLog(`Player has no cards left! Penalty: -${penalty}% health.`);
-                            
-                            // Update hearts display
-                            updateHeartsDisplay();
-                            
-                            updateHealthDisplay();
-                            dealCards();
-                            checkGameOver();
-                        } else if (gameState.botCards.length === 0) {
-                            // Bot has no cards but player does - bot loses health
-                            const penalty = 10;
-                            gameState.botHealth = Math.max(0, gameState.botHealth - penalty);
-                            addToGameLog(`Bot has no cards left! Penalty: -${penalty}% health.`);
-                            
-                            // Update hearts display
-                            updateHeartsDisplay();
-                            
-                            updateHealthDisplay();
-                            dealCards();
-                            checkGameOver();
-                        }
-                    }, 300); // Wait for monster disappear animation to complete
+                        // Update hearts display
+                        updateHeartsDisplay();
+                        
+                        updateHealthDisplay();
+                        dealCards();
+                        checkGameOver();
+                    } else if (gameState.botCards.length === 0) {
+                        // Bot has no cards but player does - bot loses health
+                        const penalty = 10;
+                        gameState.botHealth = Math.max(0, gameState.botHealth - penalty);
+                        addToGameLog(`Bot has no cards left! Penalty: -${penalty}% health.`);
+                        
+                        // Update hearts display
+                        updateHeartsDisplay();
+                        
+                        updateHealthDisplay();
+                        dealCards();
+                        checkGameOver();
+                    }
                 }
             }, 2000);
         }
@@ -1115,10 +1014,6 @@
             battleResult.classList.add('hidden');
             playerPlayedCard.classList.remove('card-played');
             botPlayedCard.classList.remove('card-bot-played');
-            playerMonster.classList.add('hidden');
-            botMonster.classList.add('hidden');
-            playerMonster.classList.remove('monster-disappear');
-            botMonster.classList.remove('monster-disappear');
         }
         
         // Add message to game log
