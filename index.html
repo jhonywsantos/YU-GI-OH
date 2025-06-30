@@ -693,20 +693,20 @@
             },
             { id: 24, name: "La Jinn", attack: 1800, defense: 1000, type: "fiend", image: "src/assets/images/Monsters/La-Jinn.jpeg" },
             { id: 25, name: "Man-Eater Bug", attack: 450, defense: 600, type: "insect", image: "src/assets/images/Monsters/Man-Eater-Bug.jpeg" },
-            { id: 26, name: "Toon Summoned Skull", attack: 2500, defense: 1200, type: "fiend", image: "src/assets/images/Monsters/Toon-Summoned-Skull.jpeg" },
-            { id: 27, name: "Beaver Warrior", attack: 1200, defense: 1500, type: "beast-warrior", image: "src/assets/images/Monsters/Beaver-Warrior.jpeg" },
+            { id: 26, name: "Toon S. Skull", attack: 2500, defense: 1200, type: "fiend", image: "src/assets/images/Monsters/Toon-Summoned-Skull.jpeg" },
+            { id: 27, name: "Beaver Warrior", attack: 1200, defense: 1500, type: "beast-warrior", image: "src/assets/images/Monsters/Beaver-Warrior.png" },
             { id: 28, name: "Great White", attack: 1600, defense: 800, type: "fish", image: "src/assets/images/Monsters/Great-White.png" },
             { id: 29, name: "Battle Ox", attack: 1700, defense: 1000, type: "beast-warrior", image: "src/assets/images/Monsters/Battle-Ox.png" },
             { id: 30, name: "Judge Man", attack: 2200, defense: 1500, type: "warrior", image: "src/assets/images/Monsters/Judge-Man.png" },
             { id: 31, name: "Mystic Clown", attack: 1500, defense: 1000, type: "fiend", image: "src/assets/images/Monsters/Mystic-Clown.png" },
-            { id: 32, name: "Giant Soldier of Stone", attack: 1300, defense: 2000, type: "rock", image: "src/assets/images/Monsters/Giant-Soldier-of-Stone.png" },
+            { id: 32, name: "Giant S. Stone", attack: 1300, defense: 2000, type: "rock", image: "src/assets/images/Monsters/Giant-Soldier-of-Stone.png" },
             { id: 33, name: "Cannon Soldier", attack: 1400, defense: 1300, type: "machine", image: "src/assets/images/Monsters/Cannon-Soldier.jpeg" },
             { id: 34, name: "Skull Servant", attack: 300, defense: 200, type: "zombie", image: "src/assets/images/Monsters/Skull-Servant.jpg" },
-            { id: 35, name: "W. Dragon, GOT Fortress #1", attack: 1400, defense: 1200, type: "dragon", image: "src/assets/images/Monsters/Winged-Dragon-Guardian-of-the-Fortress-1.png" },
+            { id: 35, name: "W.D.G Fortress #1", attack: 1400, defense: 1200, type: "dragon", image: "src/assets/images/Monsters/Winged-Dragon-Guardian-of-the-Fortress-1.png" },
             { id: 36, name: "Trap Master", attack: 500, defense: 1100, type: "warrior", image: "src/assets/images/Monsters/Trap-Master.png" },
             { id: 37, name: "Five-Headed Dragon", attack: 5000, defense: 5000, type: "dragon", image: "src/assets/images/Monsters/Five-Headed-Dragon.png" },
-            { id: 38, name: "B-E Ultimate Dragon", attack: 4500, defense: 3800, type: "dragon", image: "src/assets/images/Monsters/Blue-Eyes-Ultimate-Dragon.png" },
-            { id: 39, name: "Cyber End Dragon", attack: 4000, defense: 2800, type: "machine", image: "src/assets/images/Monsters/Cyber-End-Dragon.png" },
+            { id: 38, name: "B-E U. Dragon", attack: 4500, defense: 3800, type: "dragon", image: "src/assets/images/Monsters/Blue-Eyes-Ultimate-Dragon.png" },
+            { id: 39, name: "Cyber E. Dragon", attack: 4000, defense: 2800, type: "machine", image: "src/assets/images/Monsters/Cyber-End-Dragon.png" },
             { id: 40, name: "Gemini Elf", attack: 1900, defense: 900, type: "spellcaster", image: "src/assets/images/Monsters/Gemini-Elf.jpeg" },
 
 
@@ -851,9 +851,9 @@
             const playerCard = gameState.playerCards[index];
             
             // Verificar se a carta é Dark Hole com efeito especial
-            if (playerCard.specialEffect) {
-                activateSpecialEffect(playerCard);
-                return;
+            if (playedCard.name === "Dark Hole") {
+                opponent.field = []; // Remove todas as cartas do campo do oponente
+                endGame("player", "Dark Hole activated! Instant victory.");
             }
             
             // Display player's played card
