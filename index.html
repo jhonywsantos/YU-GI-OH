@@ -463,6 +463,21 @@
                 top: 20px;
             }
         }
+
+        /* Efeitos especiais para Dark Hole */
+        .text-purple-500 {
+            color: #a855f7;
+        }
+
+        @keyframes darkHoleEffect {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .dark-hole-animation {
+            animation: darkHoleEffect 1s infinite;
+        }
     </style>
 </head>
 <body class="bg-black text-white">
@@ -522,6 +537,7 @@
                 <ul class="guide-list pixel-text">
                     <li>Life is only reduced if there's a round winner</li>
                     <li>Each round (except draws) results in life loss for someone</li>
+                    <li>Special cards like "Dark Hole" have instant win effects</li>
                 </ul>
             </div>
             
@@ -532,6 +548,7 @@
                     <li>If life is tied, winner is decided by most round wins</li>
                     <li>If still tied, result is considered a total draw</li>
                     <li>Defeated player's life bar visually ends at 0% (even if technically higher) for visual impact</li>
+                    <li>Special effects like "Dark Hole" result in instant victory with no rematch</li>
                 </ul>
             </div>
             
@@ -649,27 +666,47 @@
             { id: 12, name: "Buster Blader", attack: 2600, defense: 2300, type: "warrior", image: "src/assets/images/Monsters/Buster-Blader.jpg" },
             { id: 13, name: "Jinzo", attack: 2400, defense: 1500, type: "machine", image: "src/assets/images/Monsters/Jinzo.png" },
             { id: 14, name: "Black Luster Soldier", attack: 3000, defense: 2500, type: "warrior", image: "src/assets/images/Monsters/Black-Luster-Soldier.jpg" },
-            { id: 15, name: "Obelisk t. Tormentor", attack: 4000, defense: 4000, type: "divine-beast", image: "src/assets/images/Monsters/Obelisk-the-Tormentor.jpg" },
-
+            { id: 15, name: "Obelisk Tormentor", attack: 4000, defense: 4000, type: "divine-beast", image: "src/assets/images/Monsters/Obelisk-the-Tormentor.jpg" },
             { 
-            id: 16, 
-            name: "Slifer Sky Dragon", 
-            attack: 5000, 
-            defense: 5000, 
-            type: "divine-beast", 
-            image: "src/assets/images/Monsters/Slifer-the-Sky-Dragon.png",
-            dynamicEffect: "ATK = 1000 × cards in hand. If opponent summons a monster in attack mode, it loses 2000 ATK. If its ATK becomes 0, destroy it." },
-
+                id: 16, 
+                name: "Slifer Sky Dragon", 
+                attack: 5000, 
+                defense: 5000, 
+                type: "divine-beast", 
+                image: "src/assets/images/Monsters/Slifer-the-Sky-Dragon.png",
+                dynamicEffect: "ATK = 1000 × cards in hand. If opponent summons a monster in attack mode, it loses 2000 ATK. If its ATK becomes 0, destroy it." 
+            },
             { id: 17, name: "The W. Dragon of Ra", attack: 7400, defense: 5300, type: "divine-beast", image: "src/assets/images/Monsters/The-Winged-Dragon-of-Ra.jpeg" },
             { id: 18, name: "Time Wizard", attack: 500, defense: 400, type: "spellcaster", image: "src/assets/images/Monsters/Time-Wizard.jpeg" },
             { id: 19, name: "Baby Dragon", attack: 1200, defense: 700, type: "dragon", image: "src/assets/images/Monsters/Baby-Dragon.jpeg" },
             { id: 20, name: "Thousand Dragon", attack: 2400, defense: 2000, type: "dragon", image: "src/assets/images/Monsters/Thousand-Dragon.jpeg" },
             { id: 21, name: "Magician of Chaos", attack: 2800, defense: 2600, type: "spellcaster", image: "src/assets/images/Monsters/Magician-of-Black-Chaos.jpeg" },
             { id: 22, name: "Mystical Elf", attack: 800, defense: 2000, type: "spellcaster", image: "src/assets/images/Monsters/Mystical-Elf.jpeg" },
+            { 
+                id: 23, 
+                name: "Dark Hole", 
+                attack: 0, 
+                defense: 0, 
+                type: "spell", 
+                image: "src/assets/images/Monsters/Dark-Hole.png", 
+                specialEffect: "Eliminates all opponent's monsters upon being drawn or played. Instant victory. No rematch allowed." 
+            },
+            { id: 24, name: "La Jinn the Mystical Genie", attack: 1800, defense: 1000, type: "fiend", image: "src/assets/images/Monsters/La-Jinn.jpeg" },
+            { id: 25, name: "Man-Eater Bug", attack: 450, defense: 600, type: "insect", image: "src/assets/images/Monsters/Man-Eater-Bug.jpeg" },
+            { id: 26, name: "Toon Summoned Skull", attack: 2500, defense: 1200, type: "fiend", image: "src/assets/images/Monsters/Toon-Summoned-Skull.jpeg" },
+            { id: 27, name: "Beaver Warrior", attack: 1200, defense: 1500, type: "beast-warrior", image: "src/assets/images/Monsters/Beaver-Warrior.jpeg" },
+            { id: 28, name: "Great White", attack: 1600, defense: 800, type: "fish", image: "src/assets/images/Monsters/Great-White.png" },
+            { id: 29, name: "Battle Ox", attack: 1700, defense: 1000, type: "beast-warrior", image: "src/assets/images/Monsters/Battle-Ox.png" },
+            { id: 30, name: "Judge Man", attack: 2200, defense: 1500, type: "warrior", image: "src/assets/images/Monsters/Judge-Man.jpeg" },
+            { id: 31, name: "Mystic Clown", attack: 1500, defense: 1000, type: "fiend", image: "src/assets/images/Monsters/Mystic-Clown.jpeg" },
+            { id: 32, name: "Giant Soldier of Stone", attack: 1300, defense: 2000, type: "rock", image: "src/assets/images/Monsters/Giant-Soldier-of-Stone.jpeg" },
+            { id: 33, name: "Cannon Soldier", attack: 1400, defense: 1300, type: "machine", image: "src/assets/images/Monsters/Cannon-Soldier.jpeg" },
+            { id: 34, name: "Skull Servant", attack: 300, defense: 200, type: "zombie", image: "src/assets/images/Monsters/Skull-Servant.jpeg" },
+            { id: 35, name: "Winged Dragon, Guardian of the Fortress #1", attack: 1400, defense: 1200, type: "dragon", image: "src/assets/images/Monsters/Winged-Dragon-Guardian-of-the-Fortress-1.jpeg" },
+            { id: 36, name: "Trap Master", attack: 500, defense: 1100, type: "warrior", image: "src/assets/images/Monsters/Trap-Master.jpeg" },
 
-
-            
         ];
+        
         // Game State
         let gameState = {
             playerHealth: 100,
@@ -708,6 +745,9 @@
         
         // Initialize Game
         function initGame() {
+            // Reativar botão de jogar novamente
+            playAgainButton.style.display = 'block';
+            
             // Reset game state
             gameState = {
                 playerHealth: 100,
@@ -759,6 +799,12 @@
             gameState.playerCards = shuffledCards.slice(0, 5);
             gameState.botCards = shuffledCards.slice(5, 10);
             
+            // Verificar se o jogador recebeu a Dark Hole
+            const hasDarkHole = gameState.playerCards.some(card => card.name === "Dark Hole");
+            if (hasDarkHole) {
+                addToGameLog("You drew Dark Hole! Play it to instantly win the duel!");
+            }
+            
             // Display player cards
             renderPlayerCards();
         }
@@ -799,6 +845,12 @@
             
             const playerCard = gameState.playerCards[index];
             
+            // Verificar se a carta é Dark Hole com efeito especial
+            if (playerCard.specialEffect) {
+                activateSpecialEffect(playerCard);
+                return;
+            }
+            
             // Display player's played card
             playerPlayedCard.innerHTML = `
                 <div class="card-name">${playerCard.name}</div>
@@ -833,6 +885,66 @@
             setTimeout(() => {
                 botPlayCard(playerCard);
             }, 1000);
+        }
+        
+        // Ativar efeito especial da carta
+        function activateSpecialEffect(card) {
+            if (card.name === "Dark Hole") {
+                // Mostrar a carta jogada
+                playerPlayedCard.innerHTML = `
+                    <div class="card-name">${card.name}</div>
+                    <div class="card-image-container">
+                        <img src="${card.image}" alt="${card.name}">
+                    </div>
+                    <div class="card-stats">
+                        <div class="text-center">
+                            <div class="card-atk">${card.attack}</div>
+                            <div class="text-xs">ATK</div>
+                        </div>
+                        <div class="text-xs flex justify-between items-center mt-2">
+                            <span>${card.defense}</span>
+                            <span class="card-def">DEF</span>
+                        </div>
+                    </div>
+                `;
+                playerPlayedCard.classList.remove('hidden');
+                playerPlayedCard.classList.add('card-played');
+                playerPlayedCard.classList.add('dark-hole-animation');
+                
+                // Remover a carta da mão do jogador
+                const cardIndex = gameState.playerCards.findIndex(c => c.id === card.id);
+                if (cardIndex !== -1) {
+                    gameState.playerCards.splice(cardIndex, 1);
+                }
+                renderPlayerCards();
+                
+                // Efeito visual especial
+                addToGameLog(`Player activates ${card.name} - ${card.specialEffect}`);
+                
+                // Animação especial para o efeito
+                battleResult.textContent = "DARK HOLE ACTIVATED!";
+                battleResult.className = 'text-2xl text-purple-500 mx-8';
+                battleResult.classList.remove('hidden');
+                
+                // Efeito de destruição das cartas do oponente
+                setTimeout(() => {
+                    // Eliminar todas as cartas do bot
+                    gameState.botCards = [];
+                    
+                    // Zerar a vida do bot
+                    gameState.botHealth = 0;
+                    updateHealthDisplay();
+                    updateHeartsDisplay();
+                    
+                    // Mostrar mensagem de vitória
+                    battleResult.textContent = "OPPONENT ANNIHILATED!";
+                    
+                    // Finalizar o jogo com vitória automática
+                    setTimeout(() => {
+                        endGameWithSpecialWin();
+                    }, 2000);
+                }, 1500);
+            }
         }
         
         // Bot plays a card
@@ -992,6 +1104,27 @@
             }, 2000);
         }
         
+        // Finalizar o jogo com vitória especial
+        function endGameWithSpecialWin() {
+            gameState.gameActive = false;
+            
+            // Mostrar game over screen com mensagem especial
+            gameOverScreen.classList.remove('hidden');
+            gameOverText.textContent = "VICTORY BY DARK HOLE!";
+            gameOverText.className = "text-4xl mb-6 text-purple-500 pixel-text";
+            
+            roundResults.innerHTML = `
+                <div>Player activated Dark Hole!</div>
+                <div>All opponent's monsters were destroyed!</div>
+                <div>Instant victory!</div>
+            `;
+            
+            // Desabilitar o botão de jogar novamente para este tipo de vitória
+            playAgainButton.style.display = 'none';
+            
+            addToGameLog("Dark Hole effect resolved - automatic victory for player!");
+        }
+        
         // Update health display
         function updateHealthDisplay() {
             // Update player health text
@@ -1115,6 +1248,7 @@
             battleResult.classList.add('hidden');
             playerPlayedCard.classList.remove('card-played');
             botPlayedCard.classList.remove('card-bot-played');
+            playerPlayedCard.classList.remove('dark-hole-animation');
             playerMonster.classList.add('hidden');
             botMonster.classList.add('hidden');
             playerMonster.classList.remove('monster-disappear');
