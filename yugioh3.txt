@@ -242,22 +242,8 @@
             overflow: hidden;
             font-size: 1.5rem;
             padding: 15px 30px;
-            margin-bottom: 1.8rem;
-            background-color: #ff3333;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .guide-button {
-            position: relative;
-            overflow: hidden;
-            font-size: 1.5rem;
-            padding: 15px 30px;
             margin-bottom: 3rem;
-            background-color: #3366ff;
+            background-color: #ff3333;
             color: white;
             border: none;
             border-radius: 8px;
@@ -270,99 +256,10 @@
             box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
         }
 
-        .guide-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(0, 0, 255, 0.7);
-        }
-
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
-        }
-
-        /* Estilos para o modal GUIDE */
-        #guideModal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 200;
-            overflow-y: auto;
-        }
-
-        .guide-content {
-            position: relative;
-            background-color: #1a1a2e;
-            margin: 5% auto;
-            padding: 20px;
-            border: 4px solid #fff;
-            box-shadow: 0 0 0 4px #000, 0 0 0 8px #fff, 0 0 0 12px #000;
-            width: 80%;
-            max-width: 800px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .guide-title {
-            font-size: 2rem;
-            color: #ffcc00;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .guide-section {
-            margin-bottom: 20px;
-        }
-
-        .guide-section-title {
-            font-size: 1.2rem;
-            color: #ff3333;
-            margin-bottom: 10px;
-        }
-
-        .guide-text {
-            font-size: 0.8rem;
-            line-height: 1.6;
-            margin-bottom: 10px;
-        }
-
-        .guide-list {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .guide-list li {
-            margin-bottom: 8px;
-            position: relative;
-            padding-left: 20px;
-        }
-
-        .guide-list li:before {
-            content: "•";
-            color: #3366ff;
-            position: absolute;
-            left: 0;
-        }
-
-        .back-button {
-            display: block;
-            margin: 20px auto 0;
-            padding: 10px 20px;
-            background-color: #ff3333;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Press Start 2P', cursive;
-            transition: transform 0.2s;
-        }
-
-        .back-button:hover {
-            transform: scale(1.05);
         }
 
         @media (max-width: 768px) {
@@ -373,7 +270,7 @@
                 font-size: 1.3rem;
                 margin-bottom: 2rem;
             }
-            .start-button, .guide-button {
+            .start-button {
                 font-size: 1.2rem;
                 padding: 12px 24px;
             }
@@ -386,19 +283,6 @@
             }
             .card-image-container img {
                 max-height: 60px;
-            }
-            .guide-content {
-                width: 90%;
-                margin: 10% auto;
-            }
-            .guide-title {
-                font-size: 1.5rem;
-            }
-            .guide-section-title {
-                font-size: 1rem;
-            }
-            .guide-text {
-                font-size: 0.7rem;
             }
         }
     </style>
@@ -415,10 +299,6 @@
             <button id="startButton" class="start-button pixel-text retro-border">
                 PRESS START
             </button>
-
-            <button id="guideButton" class="guide-button pixel-text retro-border">
-                GUIDE
-            </button>
             
             <div class="copyright text-gray-400">
                 <p>© 2025 ALL RIGHTS RESERVED</p>
@@ -430,53 +310,6 @@
         </div>
     </div>
 
-    <!-- Guide Modal -->
-    <div id="guideModal" class="pixel-text">
-        <div class="guide-content retro-border">
-            <h2 class="guide-title pixel-text">GAME GUIDE</h2>
-            
-            <div class="guide-section">
-                <h3 class="guide-section-title pixel-text">🎮 GAME LOGIC - YU-GI-OH DUEL</h3>
-                <p class="guide-text pixel-text">Attack Comparison:</p>
-                <ul class="guide-list pixel-text">
-                    <li>If Player's ATK > Bot's ATK → Player wins the round</li>
-                    <li>If Bot's ATK > Player's ATK → Bot wins the round</li>
-                    <li>If ATK values are equal → Round ends in a draw</li>
-                </ul>
-            </div>
-            
-            <div class="guide-section">
-                <h3 class="guide-section-title pixel-text">DAMAGE CALCULATION (Based on Defense)</h3>
-                <p class="guide-text pixel-text">After identifying the winner by ATK, compare the loser's DEF with the winner's ATK:</p>
-                <ul class="guide-list pixel-text">
-                    <li>If loser's DEF ≥ winner's ATK → Loser loses 10% life</li>
-                    <li>If loser's DEF < winner's ATK → Loser loses 20% life</li>
-                    <li>ATK draws don't result in life loss for either player</li>
-                </ul>
-            </div>
-            
-            <div class="guide-section">
-                <h3 class="guide-section-title pixel-text">GENERAL RULES</h3>
-                <ul class="guide-list pixel-text">
-                    <li>Life is only reduced if there's a round winner</li>
-                    <li>Each round (except draws) results in life loss for someone</li>
-                </ul>
-            </div>
-            
-            <div class="guide-section">
-                <h3 class="guide-section-title pixel-text">END GAME CONDITIONS (after 5 rounds)</h3>
-                <ul class="guide-list pixel-text">
-                    <li>Player with most remaining life points wins</li>
-                    <li>If life is tied, winner is decided by most round wins</li>
-                    <li>If still tied, result is considered a total draw</li>
-                    <li>Defeated player's life bar visually ends at 0% (even if technically higher) for visual impact</li>
-                </ul>
-            </div>
-            
-            <button id="backButton" class="back-button pixel-text">BACK</button>
-        </div>
-    </div>
-    
     <style>
         .float-animation {
             animation: float 3s ease-in-out infinite;
@@ -568,7 +401,7 @@
             { id: 8, name: "Zombie Warrior", attack: 1200, defense: 900, type: "zombie", image: "src/assets/images/Monsters/Zombie-Warrior.jpeg" },
             { id: 9, name: "Kuriboh", attack: 300, defense: 200, type: "fiend", image: "src/assets/images/Monsters/Kuriboh.jpg" },
             { id: 10, name: "Harpie Lady", attack: 1300, defense: 1400, type: "winged beast", image: "src/assets/images/Monsters/Harpie-Lady.png" },
-            { id: 11, name: "Dark Magician Girl", attack: 2000, defense: 1700, type: "spellcaster", image: "src/assets/images/Monsters/Dark-Magician-Girl.jpg" },
+            { id: 11, name: "Dark Magician Girl", attack: 2000, defense: 1700, type: "spellcaster", image: "src/assets/images/Monsters/Dark-Magician-Girl.png" },
             { id: 12, name: "Buster Blader", attack: 2600, defense: 2300, type: "warrior", image: "src/assets/images/Monsters/Buster-Blader.jpg" },
             { id: 13, name: "Jinzo", attack: 2400, defense: 1500, type: "machine", image: "src/assets/images/Monsters/Jinzo.png" },
             { id: 14, name: "Black Luster Soldier", attack: 3000, defense: 2500, type: "warrior", image: "src/assets/images/Monsters/Black-Luster-Soldier.jpg" },
@@ -612,9 +445,6 @@
         const gameScreen = document.getElementById('gameScreen');
         const gameOverScreen = document.getElementById('gameOverScreen');
         const startButton = document.getElementById('startButton');
-        const guideButton = document.getElementById('guideButton');
-        const backButton = document.getElementById('backButton');
-        const guideModal = document.getElementById('guideModal');
         const playAgainButton = document.getElementById('playAgainButton');
         const playerCardsContainer = document.getElementById('playerCards');
         const playerPlayedCard = document.getElementById('playerPlayedCard');
@@ -1028,15 +858,6 @@
         // Event Listeners
         startButton.addEventListener('click', initGame);
         playAgainButton.addEventListener('click', initGame);
-        
-        // Guide button functionality
-        guideButton.addEventListener('click', () => {
-            guideModal.style.display = 'block';
-        });
-        
-        backButton.addEventListener('click', () => {
-            guideModal.style.display = 'none';
-        });
     </script>
 </body>
 </html>
